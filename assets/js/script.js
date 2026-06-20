@@ -1,6 +1,60 @@
 
 (function(){
 
+/* ── Hire intent modal ── */
+const hireModal    = document.getElementById('hire-modal');
+const hireForm     = document.getElementById('hire-form');
+const hireConfirm  = document.getElementById('hire-confirm');
+const hireClose    = hireModal.querySelector('.hire-modal-close');
+const hireBackdrop = hireModal.querySelector('.hire-modal-backdrop');
+const btnCall      = document.querySelector('.btn-call');
+
+function openHireModal() {
+  hireForm.reset();
+  hireForm.classList.remove('hidden-state');
+  hireConfirm.classList.remove('visible', 'shown');
+  const headline = hireModal.querySelector('.hire-form-headline');
+  headline.style.display = '';
+  const wrap = hireModal.querySelector('.hire-form-wrap');
+  wrap.classList.remove('fading');
+  wrap.style.opacity = '';
+  wrap.style.transform = '';
+  hireModal.setAttribute('aria-hidden', 'false');
+  hireModal.classList.add('open');
+  document.documentElement.style.overflow = 'hidden';
+  hireModal.querySelector('input').focus();
+}
+function closeHireModal() {
+  hireModal.setAttribute('aria-hidden', 'true');
+  hireModal.classList.remove('open');
+  document.documentElement.style.overflow = '';
+}
+
+btnCall.addEventListener('click', openHireModal);
+hireClose.addEventListener('click', closeHireModal);
+hireBackdrop.addEventListener('click', closeHireModal);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && hireModal.classList.contains('open')) closeHireModal();
+});
+
+hireForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const wrap = hireModal.querySelector('.hire-form-wrap');
+  // Fade the whole form area out
+  wrap.classList.add('fading');
+  setTimeout(() => {
+    hireForm.classList.add('hidden-state');
+    hireModal.querySelector('.hire-form-headline').style.display = 'none';
+    hireConfirm.classList.add('visible');
+    // Force reflow so transition fires
+    void hireConfirm.offsetWidth;
+    hireConfirm.classList.add('shown');
+    wrap.classList.remove('fading');
+    wrap.style.opacity = '1';
+    wrap.style.transform = 'none';
+  }, 260);
+});
+
 /* ── Header: peek on scroll up, auto-hide after 2.5s ── */
 const siteHeader = document.getElementById('site-header');
 let hdrLastY = window.scrollY;
@@ -27,6 +81,71 @@ window.addEventListener('scroll', () => {
   }
   hdrLastY = y;
 }, { passive: true });
+
+/* ── Social proof section ── */
+const socialInner = document.querySelector('.social-inner');
+if (socialInner) {
+  const socialObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) socialInner.classList.add('show');
+      else socialInner.classList.remove('show');
+    });
+  }, { threshold: 0.3 });
+  socialObs.observe(document.getElementById('s_social'));
+}
+
+/* ── Testimonials ── */
+const testiCards = document.querySelectorAll('.testi-card');
+if (testiCards.length) {
+  const testiObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        testiCards.forEach((c, i) => setTimeout(() => c.classList.add('show'), i * 80));
+      } else {
+        testiCards.forEach(c => c.classList.remove('show'));
+      }
+    });
+  }, { threshold: 0.2 });
+  testiObs.observe(document.getElementById('s_testi'));
+}
+
+/* ── Ticker ── */
+(function() {
+  const track = document.getElementById('tickerTrack');
+  const seed  = document.getElementById('tickerSet');
+  if (!track || !seed) return;
+
+  // Clone sets until track is >3× viewport wide (max 20 clones as safety)
+  function fillTrack() {
+    let i = 0;
+    while (track.offsetWidth < window.innerWidth * 3 && i < 20) {
+      const clone = seed.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+      i++;
+    }
+  }
+
+  fillTrack();
+  // Re-fill after images load and expand the logos
+  window.addEventListener('load', fillTrack);
+
+  const SPEED = 0.6; // px per frame
+  let x = 0;
+
+  function tickerRaf() {
+    x -= SPEED;
+    // When we've scrolled a full set width, reset by one set to loop seamlessly
+    const setW = seed.offsetWidth;
+    if (setW > 0 && x <= -setW) {
+      x += setW;
+    }
+    track.style.transform = `translateX(${x}px)`;
+    requestAnimationFrame(tickerRaf);
+  }
+  requestAnimationFrame(tickerRaf);
+})();
 
 /* ── Real lemon illustration assets ── */
 const LEMON_IMGS = [
@@ -218,7 +337,7 @@ function s2Enter(){
     }, delay);
   });
 
-  setTimeout(()=>$('s2lbl').classList.add('show'),200);
+  setTimeout(()=>{ if($('s2lbl')) $('s2lbl').classList.add('show'); },200);
   setTimeout(()=>$('s2txt').classList.add('show'),320);
 }
 
@@ -231,7 +350,7 @@ function s2Exit(){
     slot.nextChange=0;
   });
   visibleCount=0;
-  $('s2lbl').classList.remove('show');
+  if($('s2lbl')) $('s2lbl').classList.remove('show');
   $('s2txt').classList.remove('show');
 }
 
@@ -777,7 +896,7 @@ let s4ctaMx = 0, s4ctaMy = 0;
 
 function s4Enter() {
   s4on = true; s4settled = false;
-  s4Lbl.classList.remove('show');
+  if (s4Lbl) s4Lbl.classList.remove('show');
   s4Txt.classList.remove('show');
   s4Wrap.classList.remove('show');
   s4Wrap.style.transition = 'none';
@@ -786,7 +905,7 @@ function s4Enter() {
 
   setTimeout(() => {
     if (!s4on) return;
-    s4Lbl.classList.add('show');
+    if (s4Lbl) s4Lbl.classList.add('show');
   }, 150);
 
   setTimeout(() => {
@@ -811,7 +930,7 @@ function s4Enter() {
 
 function s4Exit() {
   s4on = false; s4settled = false;
-  s4Lbl.classList.remove('show');
+  if (s4Lbl) s4Lbl.classList.remove('show');
   s4Txt.classList.remove('show');
   s4Wrap.classList.remove('show');
 }

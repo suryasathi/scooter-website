@@ -49,55 +49,56 @@
     }
     .footer-inner {
       position: relative; z-index: 10;
-      width: 100%; max-width: 1060px;
-      padding: 0 48px;
+      width: 100%; max-width: 1200px;
+      padding: 0 72px;
       display: flex; flex-direction: column;
     }
     .footer-body {
       display: flex; align-items: flex-start;
-      gap: 0; padding-bottom: 44px;
+      gap: 0; padding-bottom: 56px;
       border-bottom: 1px solid #e4e0d8;
     }
     .footer-brand {
-      display: flex; flex-direction: column; gap: 18px;
-      flex: 0 0 300px; padding-right: 60px;
+      display: flex; flex-direction: column; gap: 14px;
+      flex: 0 0 360px; padding-right: 80px;
       border-right: 1px solid #e4e0d8;
+      align-items: flex-start;
     }
-    .footer-logo { height: 22px; width: auto; display: block; }
+    .footer-logo { height: 28px; width: auto; display: block; margin-left: -2px; }
     .footer-tagline {
       font-family: 'Satoshi', system-ui, sans-serif;
-      font-size: 13.5px; color: #b0a89a; line-height: 1.7; font-weight: 300;
+      font-size: 15px; color: #b0a89a; line-height: 1.75; font-weight: 300;
     }
     .footer-cols {
-      display: flex; gap: 72px;
-      padding-left: 60px; flex: 1;
+      display: flex; gap: 80px;
+      padding-left: 80px; flex: 1;
     }
     .footer-col {
-      display: flex; flex-direction: column; gap: 13px;
+      display: flex; flex-direction: column; gap: 16px;
     }
     .footer-col-heading {
       font-family: 'Geist Mono', monospace;
-      font-size: 11px; font-weight: 500;
-      color: #E8836A; letter-spacing: 0.3px;
-      margin-bottom: 2px;
+      font-size: 11.5px; font-weight: 500;
+      color: #E8836A; text-transform: uppercase; letter-spacing: 0.09em;
+      margin-bottom: 6px;
     }
     .footer-link {
       font-family: 'Satoshi', system-ui, sans-serif;
-      font-size: 14px; font-weight: 400;
-      color: #666; text-decoration: none;
+      font-size: 15.5px; font-weight: 400;
+      color: #6b6360; text-decoration: none;
       transition: color .2s ease;
     }
     .footer-link:hover { color: #1F48F3; }
     .footer-social {
-      display: flex; align-items: center; gap: 9px;
+      display: flex; align-items: center; gap: 10px;
     }
     .footer-bottom {
-      padding-top: 26px;
+      padding-top: 32px;
       display: flex; justify-content: flex-end;
     }
     .footer-copy {
       font-family: 'Geist Mono', monospace;
-      font-size: 11px; color: #c0b8b0;
+      font-size: 12px; color: #c0b8b0;
     }
     /* footer floating items */
     .footer-fruit {
@@ -106,6 +107,233 @@
       transition: opacity 1.2s ease;
     }
     .footer-fruit.show { opacity: 1; }
+    /* ── Hire intent modal ── */
+    .hire-modal {
+      display: none;
+      position: fixed; inset: 0; z-index: 2000;
+    }
+    .hire-modal.open { display: flex; align-items: center; justify-content: center; }
+    .hire-modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(30,24,18,0.48);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .hire-modal-card {
+      position: relative; z-index: 1;
+      background: #f9f8f4;
+      border-radius: 20px;
+      padding: 52px 48px 48px;
+      width: min(520px, calc(100vw - 40px));
+      box-shadow: 0 24px 64px rgba(30,24,18,0.18);
+      overflow: hidden;
+    }
+    .hire-modal-close {
+      position: absolute; top: 18px; right: 22px;
+      background: none; border: none; cursor: pointer;
+      font-size: 22px; line-height: 1; color: #a09890;
+      padding: 4px 8px;
+      transition: color 0.2s;
+      z-index: 2;
+    }
+    .hire-modal-close:hover { color: #1e1812; }
+
+    .hire-form-wrap {
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .hire-form-wrap.fading {
+      opacity: 0; transform: translateY(8px); pointer-events: none;
+    }
+
+    .hire-form-headline {
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-size: 32px; font-weight: 700; line-height: 1.15;
+      color: #1e1812; margin-bottom: 32px;
+    }
+    .hire-form { display: flex; flex-direction: column; gap: 18px; }
+    .hire-form.hidden-state { display: none; }
+    .hire-field { display: flex; flex-direction: column; gap: 6px; }
+    .hire-field label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px; letter-spacing: 0.04em;
+      color: #a09890; text-transform: uppercase;
+    }
+    .hire-field input {
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-size: 15px; color: #1e1812;
+      background: #fff; border: 1.5px solid #e4e0d8;
+      border-radius: 10px; padding: 11px 14px;
+      outline: none; transition: border-color 0.18s;
+    }
+    .hire-field input:focus { border-color: #E8836A; }
+    .hire-submit {
+      margin-top: 8px;
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-size: 15px; font-weight: 600;
+      background: #E8836A; color: #fff;
+      border: none; border-radius: 10px;
+      padding: 13px 24px; cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+    }
+    .hire-submit:hover {
+      background: #d9714f;
+      box-shadow: 0 6px 20px rgba(232,131,106,0.38);
+      transform: translateY(-1px);
+    }
+
+    /* Confirmation state */
+    .hire-confirm {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px 0 8px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hire-confirm.visible {
+      display: flex;
+    }
+    .hire-confirm.shown {
+      opacity: 1; transform: translateY(0);
+    }
+    .hire-confirm-icon {
+      margin-bottom: 28px;
+      animation: confirmPop 0.55s cubic-bezier(.22,1.6,.36,1) both;
+    }
+    .hire-confirm-icon img {
+      width: 80px; height: auto; display: block;
+    }
+    @keyframes confirmPop {
+      from { transform: scale(0.3) rotate(-12deg); opacity: 0; }
+      to   { transform: scale(1)   rotate(0deg);   opacity: 1; }
+    }
+    .hire-confirm-headline {
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-size: 30px; font-weight: 700; line-height: 1.15;
+      color: #1e1812; margin-bottom: 14px;
+    }
+    .hire-confirm-body {
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-size: 16px; line-height: 1.6; color: #6b6360;
+      max-width: 320px;
+    }
+
+    /* ── Social proof section ── */
+    #s_social {
+      display: flex; align-items: center; justify-content: center;
+      background: #f9f8f4;
+    }
+    .social-inner {
+      width: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 56px;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .social-inner.show { opacity: 1; transform: translateY(0); }
+    .social-headline {
+      font-family: 'Geist Mono', monospace;
+      font-size: clamp(20px, 2.8vw, 36px);
+      font-weight: 400; color: #1F48F3;
+      text-align: center; line-height: 1.25;
+      letter-spacing: -0.3px;
+      padding: 0 32px;
+    }
+    .social-count { color: #E8836A; }
+
+    /* Ticker */
+    .ticker-wrap {
+      width: 100vw; overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .ticker-track {
+      display: flex;
+      will-change: transform;
+    }
+    .ticker-logos {
+      display: flex; align-items: center;
+      gap: 80px; padding-right: 80px;
+      flex-shrink: 0;
+    }
+    .ticker-logo {
+      height: 128px; width: auto; display: block;
+      filter: grayscale(1) contrast(1.1) opacity(0.7);
+      mix-blend-mode: multiply;
+      transition: filter 0.3s ease;
+      flex-shrink: 0;
+    }
+    .ticker-logo:hover { filter: grayscale(0) contrast(1) opacity(1); }
+    /* Silver Fox: crop bottom text, show icon only */
+    .ticker-logo--crop {
+      height: 128px;
+      object-fit: cover;
+      object-position: top center;
+      width: 128px;
+    }
+
+    /* ── Testimonials ── */
+    #s_testi {
+      display: flex; align-items: center; justify-content: center;
+      background: #f9f8f4;
+    }
+    .testi-inner {
+      width: 100%; max-width: 1080px;
+      padding: 0 40px;
+      display: flex; flex-direction: column;
+      gap: 44px;
+    }
+    .testi-headline {
+      font-family: 'Geist Mono', monospace;
+      font-size: clamp(28px, 3.8vw, 52px);
+      font-weight: 400; line-height: 1.18;
+      color: #1F48F3; letter-spacing: -0.4px;
+    }
+    .testi-peach { color: #E8836A; }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .testi-card {
+      background: #fff;
+      border: 1px solid #e4e0d8;
+      border-radius: 14px;
+      padding: 26px 24px 22px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      gap: 20px;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease,
+                  box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .testi-card.show { opacity: 1; transform: translateY(0); }
+    .testi-card.show:hover {
+      transform: translateY(-4px);
+      border-color: rgba(232,131,106,0.4);
+      box-shadow: 0 8px 28px rgba(232,131,106,0.18), 0 2px 8px rgba(232,131,106,0.1);
+    }
+    .testi-quote {
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-size: 13.5px; line-height: 1.65;
+      color: #6b6360; font-weight: 400;
+    }
+    .testi-person {
+      padding-top: 16px;
+      border-top: 1px solid #ede9e0;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .testi-name {
+      font-family: 'Satoshi', system-ui, sans-serif;
+      font-size: 13px; font-weight: 600; color: #1e1812;
+    }
+    .testi-role {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10.5px; color: #b0a89a; letter-spacing: 0.01em;
+    }
+
     html{scroll-snap-type:y mandatory;overflow-y:scroll;height:100%}
     body{font-family:'Satoshi',system-ui,sans-serif;background:#f9f8f4;height:100%}
 
@@ -127,7 +355,7 @@
     .s1-center h1 .amber{color:#f5a623}
     .s1-center .sub{
       font-family:'Geist Mono',monospace;
-      font-size:11.5px;color:#999;margin-top:13px;line-height:1.6;
+      font-size:15px;color:#999;margin-top:13px;line-height:1.6;
     }
 
     /* ── cards ── */
@@ -191,7 +419,7 @@
     .s2-text h2 .amber{color:#f5a623}
     .s2-text .body{
       margin-top:24px;font-family:'Geist Mono',monospace;
-      font-size:13px;color:#888;line-height:1.9;font-style:italic;
+      font-size:15px;color:#888;line-height:1.9;font-style:italic;
     }
 
     /* ── S2 floating lemons ── */
@@ -228,7 +456,7 @@
     .hiw-body {
       margin-top: 22px;
       font-family: 'Geist Mono', monospace;
-      font-size: 12.5px; color: #888;
+      font-size: 15px; color: #888;
       line-height: 1.9; font-style: italic;
     }
 
@@ -315,7 +543,7 @@
     #s3-text h2 .peach-word { color: #E8836A; }
     #s3-text .s3-body {
       margin-top: 20px; font-family: 'Geist Mono', monospace;
-      font-size: 12.5px; color: #888; line-height: 1.85; font-style: italic;
+      font-size: 15px; color: #888; line-height: 1.85; font-style: italic;
     }
 
     /* peach */
@@ -378,7 +606,7 @@
     .s4-text .s4-body {
       margin-top: 24px;
       font-family: 'Geist Mono', monospace;
-      font-size: 12.5px; color: #888;
+      font-size: 15px; color: #888;
       line-height: 1.88; font-style: italic;
     }
 
