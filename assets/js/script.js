@@ -5,55 +5,54 @@
 const hireModal    = document.getElementById('hire-modal');
 const hireForm     = document.getElementById('hire-form');
 const hireConfirm  = document.getElementById('hire-confirm');
-const hireClose    = hireModal.querySelector('.hire-modal-close');
-const hireBackdrop = hireModal.querySelector('.hire-modal-backdrop');
 const btnCall      = document.querySelector('.btn-call');
 
-function openHireModal() {
-  hireForm.reset();
-  hireForm.classList.remove('hidden-state');
-  hireConfirm.classList.remove('visible', 'shown');
-  const headline = hireModal.querySelector('.hire-form-headline');
-  headline.style.display = '';
-  const wrap = hireModal.querySelector('.hire-form-wrap');
-  wrap.classList.remove('fading');
-  wrap.style.opacity = '';
-  wrap.style.transform = '';
-  hireModal.setAttribute('aria-hidden', 'false');
-  hireModal.classList.add('open');
-  document.documentElement.style.overflow = 'hidden';
-  hireModal.querySelector('input').focus();
-}
-function closeHireModal() {
-  hireModal.setAttribute('aria-hidden', 'true');
-  hireModal.classList.remove('open');
-  document.documentElement.style.overflow = '';
-}
+if (hireModal && hireForm && hireConfirm && btnCall) {
+  const hireClose    = hireModal.querySelector('.hire-modal-close');
+  const hireBackdrop = hireModal.querySelector('.hire-modal-backdrop');
 
-btnCall.addEventListener('click', openHireModal);
-hireClose.addEventListener('click', closeHireModal);
-hireBackdrop.addEventListener('click', closeHireModal);
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && hireModal.classList.contains('open')) closeHireModal();
-});
+  function openHireModal() {
+    hireForm.reset();
+    hireForm.classList.remove('hidden-state');
+    hireConfirm.classList.remove('visible', 'shown');
+    const headline = hireModal.querySelector('.hire-form-headline');
+    if (headline) headline.style.display = '';
+    const wrap = hireModal.querySelector('.hire-form-wrap');
+    if (wrap) { wrap.classList.remove('fading'); wrap.style.opacity = ''; wrap.style.transform = ''; }
+    hireModal.setAttribute('aria-hidden', 'false');
+    hireModal.classList.add('open');
+    document.documentElement.style.overflow = 'hidden';
+    const firstInput = hireModal.querySelector('input');
+    if (firstInput) firstInput.focus();
+  }
+  function closeHireModal() {
+    hireModal.setAttribute('aria-hidden', 'true');
+    hireModal.classList.remove('open');
+    document.documentElement.style.overflow = '';
+  }
 
-hireForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const wrap = hireModal.querySelector('.hire-form-wrap');
-  // Fade the whole form area out
-  wrap.classList.add('fading');
-  setTimeout(() => {
-    hireForm.classList.add('hidden-state');
-    hireModal.querySelector('.hire-form-headline').style.display = 'none';
-    hireConfirm.classList.add('visible');
-    // Force reflow so transition fires
-    void hireConfirm.offsetWidth;
-    hireConfirm.classList.add('shown');
-    wrap.classList.remove('fading');
-    wrap.style.opacity = '1';
-    wrap.style.transform = 'none';
-  }, 260);
-});
+  btnCall.addEventListener('click', openHireModal);
+  if (hireClose)    hireClose.addEventListener('click', closeHireModal);
+  if (hireBackdrop) hireBackdrop.addEventListener('click', closeHireModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && hireModal.classList.contains('open')) closeHireModal();
+  });
+
+  hireForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const wrap = hireModal.querySelector('.hire-form-wrap');
+    if (wrap) wrap.classList.add('fading');
+    setTimeout(() => {
+      hireForm.classList.add('hidden-state');
+      const hl = hireModal.querySelector('.hire-form-headline');
+      if (hl) hl.style.display = 'none';
+      hireConfirm.classList.add('visible');
+      void hireConfirm.offsetWidth;
+      hireConfirm.classList.add('shown');
+      if (wrap) { wrap.classList.remove('fading'); wrap.style.opacity = '1'; wrap.style.transform = 'none'; }
+    }, 260);
+  });
+}
 
 /* ── Header: peek on scroll up, auto-hide after 2.5s ── */
 const siteHeader = document.getElementById('site-header');
